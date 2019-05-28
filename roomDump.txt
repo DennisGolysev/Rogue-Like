@@ -1,0 +1,41 @@
+public class Roomgeneration {
+	private int pity_;
+	private int maxH_;
+	private int maxW_;
+	private Room startRoom_;
+
+	public Roomgeneration() {
+		pity_ = // new random between 1 and 5
+		maxH_ = 5;
+		maxW_ = 5;
+		startRoom_ = new Room(pity_, maxH_, maxW_);
+	}
+}
+
+public class Room {
+	private int roomDifficulty_;
+	private int height_;
+	private int width_;
+	
+	//neighbours
+	private Room[] neighbours_;
+
+	public Room(int difficulty_, int height_, int width_) {
+		roomDifficulty_ = difficulty_;
+		this.height_ = height_;
+		this.width_ = width_;
+
+		neighbours_ = new Room[4];
+		
+		// get player n, o, s, w
+		// if player comes from 0, set neighbours_[2]
+	}
+
+	public void generateNeighbours(int neighbourNmr) {
+		neighbours_[neighbourNmr] = new Room(roomDifficulty_ + 1, height_, width_);
+	}
+
+	public Room getSelf() {
+		return this;
+	}
+}
