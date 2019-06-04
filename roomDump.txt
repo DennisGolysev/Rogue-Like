@@ -2,40 +2,78 @@ public class Roomgeneration {
 	private int pity_;
 	private int maxH_;
 	private int maxW_;
-	private Room startRoom_;
-
+	private Room root_;
+	
 	public Roomgeneration() {
-		pity_ = // new random between 1 and 5
-		maxH_ = 5;
-		maxW_ = 5;
-		startRoom_ = new Room(pity_, maxH_, maxW_);
+		pity_ = // new Random 1-5
+		maxH_ = 11;
+		maxW_ = 11;
+		
+		root_ = GenerateRoom();
+	}
+	
+	public Room GenerateRoom() {
+		int nCount = // new Random 0-3
+		return new Room(maxH_, maxW_, nCount, 0, null);
 	}
 }
 
 public class Room {
 	private int roomDifficulty_;
-	private int height_;
-	private int width_;
+	private int h_;
+	private int w_;
 	
-	//neighbours
-	private Room[] neighbours_;
-
-	public Room(int difficulty_, int height_, int width_) {
-		roomDifficulty_ = difficulty_;
-		this.height_ = height_;
-		this.width_ = width_;
-
-		neighbours_ = new Room[4];
+	private boolean[] doors;
+	private Room[] neighbours;
+	
+	public Room(int difficulty, int h, int w, int nCount, int originSide, Room originRoom) {
+		roomDifficulty_ = difficulty;
+		h_ = h;
+		w_ = w;
 		
-		// get player n, o, s, w
-		// if player comes from 0, set neighbours_[2]
+		if(originRoom != null) {
+			doors[originSide] = true;
+			neighbours[originSide] = originRoom;
+		}
+		
+		for(int i = 0; i < nCount; i++) {
+			doors[i] = true;
+		}
 	}
+	
+	//Spieler übermittelt:
+	//Himmelsrichtigung des neuen Raums in int (Norden ist 0)
+	public void GenerateRoom(int side) {
+		if(doors[side]) {
+			int nCount = // new Random 0-3
+			RoomDirection rDir = new RoomDirection(side);
+			neighbours[side] = new Room(roomDifficulty_ + 1, h_, w_, nCount, rDir.inc(2), this);
+		}
+	}
+	
+	public void GenerateEnemy() {
+		
+	}
+	
+	public void GenerateLayout() {
+		
+	}
+}
 
-	public void generateNeighbours(int neighbourNmr) {
-		neighbours_[neighbourNmr] = new Room(roomDifficulty_ + 1, height_, width_);
-	}
+public class RoomDirection {
+    private int value;
 
-	public Room getSelf() {
-		return this;
-	}
+    public RoomDirection(int value) {
+        this.value = value;
+    }
+
+    public void inc(int num) {
+        for(int i = 0; i < num; i++) {
+            if(value < 3) {
+                value = value + 1;
+            } else {
+                value = 0;
+            }
+        }
+    }
 }
