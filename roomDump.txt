@@ -7,14 +7,15 @@ public class Roomgeneration {
 	public Roomgeneration() {
 		pity_ = // new Random 1-5
 		maxH_ = 11;
-		maxW_ = 11;
+		maxW_ = 11;+
 		
 		root_ = GenerateRoom();
 	}
 	
 	public Room GenerateRoom() {
 		int nCount = // new Random 0-3
-		return new Room(maxH_, maxW_, nCount, 0, null);
+		RoomSource source = new RoomSource(0, null);
+		return new Room(maxH_, maxW_, nCount, source);
 	}
 }
 
@@ -26,14 +27,14 @@ public class Room {
 	private boolean[] doors;
 	private Room[] neighbours;
 	
-	public Room(int difficulty, int h, int w, int nCount, int originSide, Room originRoom) {
+	public Room(int difficulty, int h, int w, int nCount, RoomSource source) {
 		roomDifficulty_ = difficulty;
 		h_ = h;
 		w_ = w;
 		
-		if(originRoom != null) {
-			doors[originSide] = true;
-			neighbours[originSide] = originRoom;
+		if(source.GetSource() != null) {
+			doors[source.GetSide()] = true;
+			neighbours[source.GetSide()] = source.GetSource();
 		}
 		
 		for(int i = 0; i < nCount; i++) {
@@ -47,7 +48,8 @@ public class Room {
 		if(doors[side]) {
 			int nCount = // new Random 0-3
 			RoomDirection rDir = new RoomDirection(side);
-			neighbours[side] = new Room(roomDifficulty_ + 1, h_, w_, nCount, rDir.inc(2), this);
+			RoomSource newSource = new RoomSource(rDir.inc(2), this),
+			neighbours[side] = new Room(roomDifficulty_ + 1, h_, w_, nCount, newSource);
 		}
 	}
 	
@@ -76,4 +78,22 @@ public class RoomDirection {
             }
         }
     }
+}
+
+public class RoomSource {
+    private int side_;
+	private Room source_;
+
+    public RoomSource(int side, Room source) {
+        this.side_ = side;
+		this.source_ = source;
+    }
+
+    public int GetSide() {
+        return side_;
+    }
+	
+	public Room GetSource() {
+		return source_;
+	}
 }
