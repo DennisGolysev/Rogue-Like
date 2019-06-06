@@ -53,10 +53,12 @@ public class Room {
 		}
 	}
 	
+	//Gegner
 	public void GenerateEnemy() {
 		
 	}
 	
+	//Gegenstände
 	public void GenerateLayout() {
 		
 	}
